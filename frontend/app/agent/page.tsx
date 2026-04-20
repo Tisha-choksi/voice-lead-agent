@@ -19,10 +19,10 @@
 
 import { useVoiceAgent } from "@/hooks/useVoiceAgent";
 import {
-  useAgentStatus,
-  useMessages,
-  useLeadScore,
-  useQualificationData,
+    useAgentStatus,
+    useMessages,
+    useLeadScore,
+    useQualificationData,
 } from "@/store/agentStore";
 
 import { AriaOrb } from "@/components/agent/AriaOrb";
@@ -39,116 +39,116 @@ import type { Metadata } from "next";
 
 export default function AgentPage() {
 
-  // ── Hook: voice agent pipeline ─────────────────────────────────
-  // All voice logic — STT, API call, TTS — comes from here
-  const {
-    isListening,
-    isSpeaking,
-    isSupported,
-    startListening,
-    stopListening,
-    sendTextMessage,
-    resetSession,
-  } = useVoiceAgent();
+    // ── Hook: voice agent pipeline ─────────────────────────────────
+    // All voice logic — STT, API call, TTS — comes from here
+    const {
+        isListening,
+        isSpeaking,
+        isSupported,
+        startListening,
+        stopListening,
+        sendTextMessage,
+        resetSession,
+    } = useVoiceAgent();
 
-  // ── Store: read global state ────────────────────────────────────
-  // Each selector hook only re-renders THIS component when its slice changes
-  const status         = useAgentStatus();
-  const messages       = useMessages();
-  const leadScore      = useLeadScore();
-  const qualData       = useQualificationData();
+    // ── Store: read global state ────────────────────────────────────
+    // Each selector hook only re-renders THIS component when its slice changes
+    const status = useAgentStatus();
+    const messages = useMessages();
+    const leadScore = useLeadScore();
+    const qualData = useQualificationData();
 
-  // ── Orb click handler ──────────────────────────────────────────
-  // Toggle mic on/off when orb or mic button is clicked
-  const handleOrbClick = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
-  };
+    // ── Orb click handler ──────────────────────────────────────────
+    // Toggle mic on/off when orb or mic button is clicked
+    const handleOrbClick = () => {
+        if (isListening) {
+            stopListening();
+        } else {
+            startListening();
+        }
+    };
 
-  return (
-    <div
-      className="max-w-6xl mx-auto px-4 py-8"
-      aria-label="Aria voice agent interface"
-    >
-
-      {/* ── Page header ─────────────────────────────────────────── */}
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1
-            className="text-3xl font-extrabold tracking-tight"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            <span className="gradient-text">Aria</span>
-            <span style={{ color: "var(--text-primary)" }}> Voice Agent</span>
-          </h1>
-          <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-            AI-powered lead qualification · Groq LLaMA-3 · Free tier
-          </p>
-        </div>
-
-        {/* New Session button */}
-        <button
-          onClick={resetSession}
-          className="text-xs px-3 py-1.5 rounded-lg transition-colors hover:opacity-80"
-          style={{
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
-            color: "var(--text-muted)",
-            fontFamily: "var(--font-body)",
-          }}
-          aria-label="Start a new conversation session"
-        >
-          ↺ New Session
-        </button>
-      </div>
-
-      {/* ── Main 2-column grid ──────────────────────────────────── */}
-      <div className="grid gap-5 lg:grid-cols-[1fr_380px]">
-
-        {/* ── LEFT: Aria orb + controls ──────────────────────────── */}
+    return (
         <div
-          className="flex flex-col items-center justify-center gap-8 rounded-2xl py-10 px-6"
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            minHeight: 480,
-          }}
+            className="max-w-6xl mx-auto px-4 py-8"
+            aria-label="Aria voice agent interface"
         >
-          {/* Animated orb — click to start/stop listening */}
-          <AriaOrb
-            status={status}
-            onClick={handleOrbClick}
-          />
 
-          {/* Waveform — animates when mic is active */}
-          <Waveform isActive={isListening} />
+            {/* ── Page header ─────────────────────────────────────────── */}
+            <div className="mb-8 flex items-start justify-between">
+                <div>
+                    <h1
+                        className="text-3xl font-extrabold tracking-tight"
+                        style={{ fontFamily: "var(--font-display)" }}
+                    >
+                        <span className="gradient-text">Aria</span>
+                        <span style={{ color: "var(--text-primary)" }}> Voice Agent</span>
+                    </h1>
+                    <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
+                        AI-powered lead qualification · Groq LLaMA-3 · Free tier
+                    </p>
+                </div>
 
-          {/* Mic button + text input fallback */}
-          <MicButton
-            status={status}
-            isSupported={isSupported}
-            onStartListening={startListening}
-            onStopListening={stopListening}
-            onSendText={sendTextMessage}
-          />
+                {/* New Session button */}
+                <button
+                    onClick={resetSession}
+                    className="text-xs px-3 py-1.5 rounded-lg transition-colors hover:opacity-80"
+                    style={{
+                        background: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        color: "var(--text-muted)",
+                        fontFamily: "var(--font-body)",
+                    }}
+                    aria-label="Start a new conversation session"
+                >
+                    ↺ New Session
+                </button>
+            </div>
+
+            {/* ── Main 2-column grid ──────────────────────────────────── */}
+            <div className="grid gap-5 lg:grid-cols-[1fr_380px]">
+
+                {/* ── LEFT: Aria orb + controls ──────────────────────────── */}
+                <div
+                    className="flex flex-col items-center justify-center gap-8 rounded-2xl py-10 px-6"
+                    style={{
+                        background: "var(--card)",
+                        border: "1px solid var(--border)",
+                        minHeight: 480,
+                    }}
+                >
+                    {/* Animated orb — click to start/stop listening */}
+                    <AriaOrb
+                        status={status}
+                        onClick={handleOrbClick}
+                    />
+
+                    {/* Waveform — animates when mic is active */}
+                    <Waveform isActive={isListening} />
+
+                    {/* Mic button + text input fallback */}
+                    <MicButton
+                        status={status}
+                        isSupported={isSupported}
+                        onStartListening={startListening}
+                        onStopListening={stopListening}
+                        onSendText={sendTextMessage}
+                    />
+                </div>
+
+                {/* ── RIGHT: Conversation chat panel ─────────────────────── */}
+                <ChatPanel
+                    messages={messages}
+                    status={status}
+                    leadScore={leadScore}
+                />
+            </div>
+
+            {/* ── Bottom: Live qualification strip ────────────────────── */}
+            <div className="mt-5">
+                <QualificationStrip data={qualData} />
+            </div>
+
         </div>
-
-        {/* ── RIGHT: Conversation chat panel ─────────────────────── */}
-        <ChatPanel
-          messages={messages}
-          status={status}
-          leadScore={leadScore}
-        />
-      </div>
-
-      {/* ── Bottom: Live qualification strip ────────────────────── */}
-      <div className="mt-5">
-        <QualificationStrip data={qualData} />
-      </div>
-
-    </div>
-  );
+    );
 }
