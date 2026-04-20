@@ -1,67 +1,109 @@
-// FILE PATH: voice-lead-agent/frontend/components/ui/Badge.tsx
-//
-// WHY THIS FILE EXISTS:
-//   Provides a color-coded badge that visually indicates lead temperature
-//   (HOT / WARM / COLD). Optionally pulses to draw attention to hot leads.
-
 "use client";
 
 import type { LeadScore } from "@/lib/types";
 
-/* ── colour map per score ─────────────────────────────────────────── */
-const SCORE_STYLES: Record<
-    LeadScore,
-    { bg: string; text: string; border: string; glow: string }
-> = {
-    HOT: {
-        bg: "rgba(255, 59, 48, 0.12)",
-        text: "#ff453a",
-        border: "rgba(255, 59, 48, 0.30)",
-        glow: "0 0 8px rgba(255, 59, 48, 0.35)",
-    },
-    WARM: {
-        bg: "rgba(255, 179, 64, 0.12)",
-        text: "#ffb340",
-        border: "rgba(255, 179, 64, 0.30)",
-        glow: "0 0 8px rgba(255, 179, 64, 0.25)",
-    },
-    COLD: {
-        bg: "rgba(100, 210, 255, 0.10)",
-        text: "#64d2ff",
-        border: "rgba(100, 210, 255, 0.25)",
-        glow: "none",
-    },
+// ── LeadScoreBadge ─────────────────────────────────────────────
+
+const SCORE_STYLES: Record<LeadScore, { bg: string; color: string }> = {
+    HOT: { bg: "rgba(255,77,109,0.12)", color: "var(--hot)" },
+    WARM: { bg: "rgba(255,209,102,0.12)", color: "var(--warm)" },
+    COLD: { bg: "rgba(6,214,160,0.12)", color: "var(--cold)" },
 };
 
-/* ── component ────────────────────────────────────────────────────── */
-interface LeadScoreBadgeProps {
+export function LeadScoreBadge({
+    score,
+    pulse = false,
+    size = "sm",
+}: {
     score: LeadScore;
-    /** When true the badge gently pulses (used for HOT leads). */
     pulse?: boolean;
-}
-
-export function LeadScoreBadge({ score, pulse = false }: LeadScoreBadgeProps) {
+    size?: "sm" | "md";
+}) {
     const s = SCORE_STYLES[score];
+    const pad = size === "md" ? "4px 12px" : "2px 10px";
+    const fs = size === "md" ? 12 : 11;
 
     return (
         <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full select-none"
             style={{
-                background: s.bg,
-                color: s.text,
-                border: `1px solid ${s.border}`,
-                boxShadow: s.glow,
-                fontFamily: "var(--font-display)",
-                letterSpacing: "0.04em",
-                animation: pulse ? "badgePulse 2s ease-in-out infinite" : "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 5,
+                padding: pad,
+                borderRadius: 6,
+                fontSize: fs,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                backgroundColor: s.bg,
+                color: s.color,
             }}
         >
-            {/* small coloured dot */}
-            <span
-                className="inline-block w-1.5 h-1.5 rounded-full"
-                style={{ background: s.text }}
-            />
+            {pulse && score === "HOT" && (
+                <span
+                    style={{
+                        width: 6, height: 6,
+                        borderRadius: "50%",
+                        backgroundColor: s.color,
+                        display: "inline-block",
+                        animation: "pulse-glow 1s ease-in-out infinite",
+                    }}
+                />
+            )}
             {score}
         </span>
     );
+}
+
+// ── Badge (generic) ────────────────────────────────────────────
+
+type Variant = "default" | "info" | "success" | "warning" | "danger";
+
+const VARIANT_STYLES: Record<Variant, { bg: string; color: string }> = {
+    default: { bg: "rgba(255,255,255,0.06)", color: "var(--text-muted)" },
+    info: { bg: "rgba(108,99,255,0.12)", color: "var(--brand-light)" },
+    success: { bg: "rgba(6,214,160,0.12)", color: "var(--cold)" },
+    warning: { bg: "rgba(255,209,102,0.12)", color: "var(--warm)" },
+    danger: { bg: "rgba(255,77,109,0.12)", color: "var(--hot)" },
+};
+
+export function Badge({
+    children,
+    variant = "default",
+}: {
+    children: React.ReactNode;
+    variant?: Variant;
+}) {
+    const s = VARIANT_STYLES[variant];
+    return (
+        <span
+            style={{
+                display: "inline-block",
+                padding: "2px 8px",
+                borderRadius: 5,
+                fontSize: 11,
+                fontWeight: 500,
+                backgroundColor: s.bg,
+                color: s.color,
+            }}
+        >
+            {children}
+        </span>
+    );
+}
+
+// ── ConversationStageBadge ─────────────────────────────────────
+
+type Stage = "greeting" | "discovery" | "qualification" | "closing";
+
+const STAGE_MAP: Record<Stage, { label: string; variant: Variant }> = {
+    greeting: { label: "Greeting", variant: "default" },
+    discovery: { label: "Discovery", variant: "info" },
+    qualification: { label: "Qualifying", variant: "warning" },
+    closing: { label: "Closing", variant: "success" },
+};
+
+export function ConversationStageBadge({ stage }: { stage: Stage }) {
+    const cfg = STAGE_MAP[stage] ?? STAGE_MAP.greeting;
+    return <Badge variant={cfg.variant}>{cfg.label}</Badge>;
 }
