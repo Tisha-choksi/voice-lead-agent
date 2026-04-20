@@ -4,8 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
   }
 }
 
@@ -33,7 +33,7 @@ export function useSpeechRecognition({
 }: Options = {}): Return {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any | null>(null);
 
   const isSupported =
     typeof window !== "undefined" &&
@@ -50,7 +50,7 @@ export function useSpeechRecognition({
     recognition.interimResults = true;
     recognition.lang = lang;
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       let interim = "";
       let final = "";
 
@@ -69,7 +69,7 @@ export function useSpeechRecognition({
 
     recognition.onend = () => setIsListening(false);
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (event: any) => {
       setIsListening(false);
       if (event.error === "no-speech") return;
       const msgs: Record<string, string> = {
