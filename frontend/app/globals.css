@@ -2,189 +2,84 @@
 @import "tailwindcss";
 
 :root {
-    --brand: #6c63ff;
-    --brand-light: #9b94ff;
-    --brand-dark: #4a43cc;
-    --bg: #09090f;
-    --surface: #111118;
-    --card: #16161f;
-    --border: #1f1f2e;
-    --text: #e8e8f0;
-    --muted: #6b6b88;
-    --hot: #ff4d6d;
-    --warm: #ffd166;
-    --cold: #06d6a0;
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
+  --brand:       #6c63ff;
+  --brand-light: #9b94ff;
+  --brand-dark:  #4a43cc;
+  --bg:          #09090f;
+  --surface:     #111118;
+  --card:        #16161f;
+  --border:      #1f1f2e;
+  --text:        #e8e8f0;
+  --muted:       #6b6b88;
+  --hot:         #ff4d6d;
+  --warm:        #ffd166;
+  --cold:        #06d6a0;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    background-image:
-        radial-gradient(ellipse 80% 40% at 20% 10%, rgba(108, 99, 255, 0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 90%, rgba(255, 77, 109, 0.04) 0%, transparent 60%);
-    background-attachment: fixed;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 40% at 20% 10%, rgba(108,99,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(255,77,109,0.04) 0%, transparent 60%);
+  background-attachment: fixed;
 }
 
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--surface);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 99px;
-}
-
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) var(--surface);
-}
-
-::selection {
-    background: rgba(108, 99, 255, 0.3);
-}
-
-:focus-visible {
-    outline: 2px solid var(--brand);
-    outline-offset: 2px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+* { scrollbar-width: thin; scrollbar-color: var(--border) var(--surface); }
+::selection { background: rgba(108,99,255,0.3); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--brand-light), var(--brand));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  background: linear-gradient(135deg, var(--brand-light), var(--brand));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Animations */
 @keyframes pulse-glow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
-    }
-
-    50% {
-        box-shadow: 0 0 60px rgba(108, 99, 255, 0.7);
-    }
+  0%,100% { box-shadow: 0 0 20px rgba(108,99,255,0.3); }
+  50%      { box-shadow: 0 0 60px rgba(108,99,255,0.7); }
 }
-
 @keyframes wave-dance {
-
-    0%,
-    100% {
-        height: 4px;
-    }
-
-    50% {
-        height: 28px;
-    }
+  0%,100% { height: 4px; }
+  50%      { height: 28px; }
 }
-
 @keyframes orbit {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-
 @keyframes slide-up {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes typing-bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-6px);
-    }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
-
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-
 @keyframes blink {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0; }
 }
 
-.animate-slide-up {
-    animation: slide-up 0.3s ease forwards;
-}
-
-.animate-pulse-glow {
-    animation: pulse-glow 1.5s ease-in-out infinite;
-}
-
-.animate-wave {
-    animation: wave-dance 0.6s ease-in-out infinite;
-}
-
-.animate-orbit {
-    animation: orbit 3s linear infinite;
-}
-
-.animate-spin-slow {
-    animation: spin 1.5s linear infinite;
-}
-
-.animate-blink {
-    animation: blink 1s ease-in-out infinite;
-}
+.animate-slide-up   { animation: slide-up 0.3s ease forwards; }
+.animate-pulse-glow { animation: pulse-glow 1.5s ease-in-out infinite; }
+.animate-wave       { animation: wave-dance 0.6s ease-in-out infinite; }
+.animate-orbit      { animation: orbit 3s linear infinite; }
+.animate-spin-slow  { animation: spin 1.5s linear infinite; }
+.animate-blink      { animation: blink 1s ease-in-out infinite; }
