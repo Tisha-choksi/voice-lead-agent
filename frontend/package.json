@@ -1,6 +1,6 @@
 {
   "name": "voice-lead-agent-frontend",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,8 +13,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zustand": "^5.0.2",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.5"
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
