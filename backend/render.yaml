@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: aria-voice-agent-backend
+    runtime: python
+    region: singapore          # closest to India
+    plan: free
+
+    rootDir: backend
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    envVars:
+      - key: SARVAM_API_KEY
+        sync: false            # set manually in Render dashboard
+
+      - key: SARVAM_MODEL
+        value: sarvam-m
+
+      - key: EDGE_TTS_VOICE
+        value: en-IN-NeerjaNeural
+
+      - key: EDGE_TTS_RATE
+        value: "+0%"
+
+      - key: EDGE_TTS_PITCH
+        value: "+0Hz"
+
+      - key: DB_PATH
+        value: /tmp/leads.db   # ephemeral disk on Render free tier
+
+      - key: ENVIRONMENT
+        value: production
+
+      - key: CORS_ORIGINS
+        sync: false            # set to your Vercel URL after deploy
+                               # e.g. https://aria-voice-agent.vercel.app
+
+      - key: AGENT_NAME
+        value: Aria
+
+      - key: AGENT_COMPANY
+        value: "Your Company"
+
+      - key: PORT
+        value: "10000"
