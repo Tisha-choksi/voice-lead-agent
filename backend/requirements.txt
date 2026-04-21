@@ -1,36 +1,7 @@
-# ── Web framework ─────────────────────────────────────────────
-# fastapi: The API framework. Handles routing, request parsing,
-#          response serialization, and OpenAPI docs auto-generation.
-#          Visit http://localhost:8000/docs to see the interactive API explorer.
 fastapi==0.115.0
-
-# uvicorn: The ASGI server that actually runs FastAPI.
-#          Think of FastAPI as the app code, uvicorn as the engine.
-#          [standard] adds websocket support and better performance.
-#          Command to run: uvicorn app.main:app --reload
 uvicorn[standard]==0.30.6
-
-# ── AI / LLM ──────────────────────────────────────────────────
-# groq: The official Groq Python client.
-#       Gives you access to LLaMA-3.3-70B for free.
-#       Get your key at: https://console.groq.com
-groq==0.11.0
-
-# ── Data validation ───────────────────────────────────────────
-# pydantic: FastAPI uses this internally for ALL request/response validation.
-#           When you define a ChatRequest model, Pydantic automatically:
-#           - Validates incoming JSON has the right fields and types
-#           - Returns a clear 422 error if validation fails
-#           - Serializes Python objects to JSON for responses
-pydantic==2.8.2
-
-# ── Environment variables ─────────────────────────────────────
-# python-dotenv: Loads variables from .env file into os.environ.
-#                Without this, you'd have to export GROQ_API_KEY=xxx
-#                in your terminal every time you start the server.
-python-dotenv==1.0.1
-
-# ── HTTP client (optional, for health checks) ─────────────────
-# httpx: Modern async HTTP client. Useful if you want to call
-#        external APIs (webhooks, Twilio later, etc.) from the backend.
 httpx==0.27.2
+edge-tts==6.1.12
+pydantic==2.8.2
+python-dotenv==1.0.1
+anyio==4.4.0
