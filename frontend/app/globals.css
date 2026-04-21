@@ -1,33 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 :root {
     --brand: #6c63ff;
     --brand-light: #9b94ff;
     --brand-dark: #4a43cc;
-    --brand-glow: rgba(108, 99, 255, 0.25);
-
     --bg: #09090f;
     --surface: #111118;
     --card: #16161f;
     --border: #1f1f2e;
-
-    --text-primary: #e8e8f0;
-    --text-muted: #6b6b88;
-
+    --text: #e8e8f0;
+    --muted: #6b6b88;
     --hot: #ff4d6d;
     --warm: #ffd166;
     --cold: #06d6a0;
-
     --font-display: 'Syne', sans-serif;
     --font-body: 'DM Sans', sans-serif;
-    --font-mono: monospace;
-
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-full: 9999px;
 }
 
 *,
@@ -38,18 +26,11 @@
     padding: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
-    background-color: var(--bg);
-    color: var(--text-primary);
+    background: var(--bg);
+    color: var(--text);
     font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     background-image:
         radial-gradient(ellipse 80% 40% at 20% 10%, rgba(108, 99, 255, 0.06) 0%, transparent 60%),
@@ -58,8 +39,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -68,11 +48,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     background: var(--border);
-    border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+    border-radius: 99px;
 }
 
 * {
@@ -81,14 +57,12 @@ body {
 }
 
 ::selection {
-    background-color: rgba(108, 99, 255, 0.3);
-    color: var(--text-primary);
+    background: rgba(108, 99, 255, 0.3);
 }
 
 :focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
 }
 
 h1,
@@ -101,19 +75,6 @@ h6 {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: var(--text-primary);
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }
 
 .gradient-text {
@@ -123,7 +84,7 @@ h6 {
     background-clip: text;
 }
 
-/* ── Animations used across components ── */
+/* Animations */
 @keyframes pulse-glow {
 
     0%,
@@ -192,6 +153,18 @@ h6 {
     }
 }
 
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 .animate-slide-up {
     animation: slide-up 0.3s ease forwards;
 }
@@ -200,7 +173,7 @@ h6 {
     animation: pulse-glow 1.5s ease-in-out infinite;
 }
 
-.animate-wave-dance {
+.animate-wave {
     animation: wave-dance 0.6s ease-in-out infinite;
 }
 
@@ -210,4 +183,8 @@ h6 {
 
 .animate-spin-slow {
     animation: spin 1.5s linear infinite;
+}
+
+.animate-blink {
+    animation: blink 1s ease-in-out infinite;
 }
