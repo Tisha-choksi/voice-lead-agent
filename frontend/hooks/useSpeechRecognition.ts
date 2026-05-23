@@ -50,6 +50,10 @@ export function useSpeechRecognition({
   // Start false on both server AND client to avoid hydration mismatch
   const [isSupported, setIsSupported] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const onResultRef = useRef(onResult);
+  const onErrorRef  = useRef(onError);
+  onResultRef.current = onResult;
+  onErrorRef.current  = onError;
 
   useEffect(() => {
     setIsSupported("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
@@ -68,7 +72,7 @@ export function useSpeechRecognition({
         if (e.results[i].isFinal) final += text; else interim += text;
       }
       setTranscript(final || interim);
-      if (final && onResult) onResult(final.trim());
+      if (final && onResultRef.current) onResultRef.current(final.trim());
     };
 
     r.onend    = () => setIsListening(false);
@@ -80,7 +84,7 @@ export function useSpeechRecognition({
         "audio-capture": "No microphone found.",
         "network":       "Network error during recognition.",
       };
-      if (onError) onError(msgs[e.error] || `Mic error: ${e.error}`);
+      if (onErrorRef.current) onErrorRef.current(msgs[e.error] || `Mic error: ${e.error}`);
     };
 
     recognitionRef.current = r;
@@ -88,7 +92,6 @@ export function useSpeechRecognition({
       r.onresult = null; r.onend = null; r.onerror = null;
       try { r.abort(); } catch { /* ignore */ }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported, lang, continuous]);
 
   const startListening = useCallback(() => {

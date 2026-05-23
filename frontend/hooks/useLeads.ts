@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getLeads, getLeadStats, deleteLead, exportLeadsCSV } from "@/lib/api";
 import type { Lead, LeadStats } from "@/lib/types";
 
@@ -9,6 +9,8 @@ export function useLeads() {
   const [stats,   setStats]   = useState<LeadStats>({ total:0, hot:0, warm:0, cold:0 });
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState<string | null>(null);
+  const leadsRef = useRef(leads);
+  leadsRef.current = leads;
 
   const refresh = useCallback(async () => {
     try {
@@ -32,19 +34,18 @@ export function useLeads() {
   const handleDelete = useCallback(async (sessionId: string) => {
     try {
       await deleteLead(sessionId);
+      const d = leadsRef.current.find((l) => l.session_id === sessionId);
       setLeads((prev) => prev.filter((l) => l.session_id !== sessionId));
-      setStats((prev) => {
-        const d = leads.find((l) => l.session_id === sessionId);
-        if (!d) return prev;
-        return {
+      if (d) {
+        setStats((prev) => ({
           ...prev, total: prev.total - 1,
           hot:  d.lead_score === "HOT"  ? prev.hot  - 1 : prev.hot,
           warm: d.lead_score === "WARM" ? prev.warm - 1 : prev.warm,
           cold: d.lead_score === "COLD" ? prev.cold - 1 : prev.cold,
-        };
-      });
+        }));
+      }
     } catch (e) { alert(e instanceof Error ? e.message : "Failed to delete."); }
-  }, [leads]);
+  }, []);
 
   const handleExport = useCallback(() => {
     if (!leads.length) { alert("No leads to export yet."); return; }
