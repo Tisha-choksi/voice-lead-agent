@@ -50,12 +50,12 @@ async def chat_stream(request: ChatRequest) -> StreamingResponse:
 
         # 3. Save to database
         try:
-            if not database.get_lead_by_session(session_id):
-                database.save_lead(session_id, request.message, qual_data.lead_score)
+            if not await database.async_get_lead_by_session(session_id):
+                await database.async_save_lead(session_id, request.message, qual_data.lead_score)
             else:
-                database.update_lead(session_id, qual_data.lead_score, qual_data.model_dump())
-            database.save_message(session_id, "user", request.message)
-            database.save_message(session_id, "assistant", aria_reply)
+                await database.async_update_lead(session_id, qual_data.lead_score, qual_data.model_dump())
+            await database.async_save_message(session_id, "user", request.message)
+            await database.async_save_message(session_id, "assistant", aria_reply)
         except Exception as db_err:
             print(f"⚠️  DB error: {db_err}")
 
@@ -100,10 +100,10 @@ async def chat_sync(request: ChatRequest) -> ChatResponse:
     aria_reply, qual_data = parse_llm_response(raw)
 
     try:
-        if not database.get_lead_by_session(session_id):
-            database.save_lead(session_id, request.message, qual_data.lead_score)
+        if not await database.async_get_lead_by_session(session_id):
+            await database.async_save_lead(session_id, request.message, qual_data.lead_score)
         else:
-            database.update_lead(session_id, qual_data.lead_score, qual_data.model_dump())
+            await database.async_update_lead(session_id, qual_data.lead_score, qual_data.model_dump())
     except Exception as e:
         print(f"⚠️  DB error: {e}")
 

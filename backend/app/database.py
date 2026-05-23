@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import asyncio
 from typing import Optional
 from app.config import settings
 
@@ -108,3 +109,21 @@ def save_message(session_id: str, role: str, message: str) -> None:
             (session_id, role, message),
         )
         conn.commit()
+
+
+# ── Async wrappers (offload sync sqlite3 to thread pool) ──────
+
+async def async_get_lead_by_session(session_id: str) -> Optional[dict]:
+    return await asyncio.to_thread(get_lead_by_session, session_id)
+
+
+async def async_save_lead(session_id: str, first_message: str, lead_score: str = "COLD") -> None:
+    return await asyncio.to_thread(save_lead, session_id, first_message, lead_score)
+
+
+async def async_update_lead(session_id: str, lead_score: str, qualification_data: dict) -> None:
+    return await asyncio.to_thread(update_lead, session_id, lead_score, qualification_data)
+
+
+async def async_save_message(session_id: str, role: str, message: str) -> None:
+    return await asyncio.to_thread(save_message, session_id, role, message)

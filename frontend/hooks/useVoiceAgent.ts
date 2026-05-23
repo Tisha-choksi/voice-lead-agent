@@ -32,7 +32,8 @@ export function useVoiceAgent(): UseVoiceAgentReturn {
   const processingRef  = useRef(false);
   const [isStreaming, setIsStreaming] = useState(false);
 
-  const { isSpeaking, playAudio, stopAudio } = useEdgeTTS(() => setStatus("idle"));
+  const onAudioEnd = useCallback(() => setStatus("idle"), [setStatus]);
+  const { isSpeaking, playAudio, stopAudio } = useEdgeTTS(onAudioEnd);
 
   // ── Core pipeline ─────────────────────────────────────────────
   const handleUserSpeech = useCallback(async (transcript: string) => {
@@ -58,7 +59,6 @@ export function useVoiceAgent(): UseVoiceAgentReturn {
 
       if (!res.ok || !res.body) throw new Error(`Backend error: ${res.status}`);
 
-      setStatus("speaking");
       setIsStreaming(true);
 
       // ── Read SSE stream ───────────────────────────────────────
@@ -101,7 +101,7 @@ export function useVoiceAgent(): UseVoiceAgentReturn {
                 break;
 
               case "audio":
-                // Play Edge TTS neural audio — human quality
+                setStatus("speaking");
                 if (data.audio) await playAudio(data.audio);
                 break;
 
@@ -113,8 +113,6 @@ export function useVoiceAgent(): UseVoiceAgentReturn {
           } catch { /* skip malformed chunk */ }
         }
       }
-
-      if (!isSpeaking) setStatus("idle");
 
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Connection error. Is the backend running?";
@@ -128,7 +126,7 @@ export function useVoiceAgent(): UseVoiceAgentReturn {
     sessionId, conversationHistory,
     addMessage, updateLastAriaMessage,
     setSessionId, setLeadScore, setQualificationData,
-    setStatus, addToHistory, playAudio, stopAudio, isSpeaking,
+    setStatus, addToHistory, playAudio, stopAudio,
   ]);
 
   // ── STT ──────────────────────────────────────────────────────
